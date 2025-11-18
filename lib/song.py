@@ -2,23 +2,31 @@ class Song:
     count = 0
     genres = []
     artists = []
-    genres_count = {}
-    artists_count = {}
+    genre_count = {}
+    artist_count = {}
 
     def __init__(self, name, artist, genre):
         self.name = name
         self.artist = artist
         self.genre = genre
 
-        # Update class-level attributes
-        Song.add_song_to_counts()
-        Song.add_to_genres(self.genre)
-        Song.add_to_artists(self.artist)
-        Song.add_to_genre_count(self.genre)
-        Song.add_to_artist_count(self.artist)
+        # Always increment total count
+        Song.add_song_to_count()
+
+        # Always log every genre and artist (even duplicates)
+        Song.genres.append(genre)
+        Song.artists.append(artist)
+
+        # Keep unique lists
+        Song.add_to_genres(genre)
+        Song.add_to_artists(artist)
+
+        # Build histograms
+        Song.add_to_genre_count(genre)
+        Song.add_to_artist_count(artist)
 
     @classmethod
-    def add_song_to_counts(cls):
+    def add_song_to_count(cls):
         cls.count += 1
 
     @classmethod
@@ -33,12 +41,12 @@ class Song:
 
     @classmethod
     def add_to_genre_count(cls, genre):
-        if genre not in cls.genres_count:
-            cls.genres_count[genre] = 0
-        cls.genres_count[genre] += 1
+        if genre not in cls.genre_count:
+            cls.genre_count[genre] = 0
+        cls.genre_count[genre] += 1
 
     @classmethod
     def add_to_artist_count(cls, artist):
-        if artist not in cls.artists_count:
-            cls.artists_count[artist] = 0
-        cls.artists_count[artist] += 1
+        if artist not in cls.artist_count:
+            cls.artist_count[artist] = 0
+        cls.artist_count[artist] += 1
